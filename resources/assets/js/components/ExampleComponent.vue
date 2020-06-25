@@ -1,23 +1,46 @@
 <template>
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card card-default">
-                    <div class="card-header">Example Component</div>
-
-                    <div class="card-body">
-                        I'm an example component.
-                    </div>
-                </div>
-            </div>
-        </div>
+            <vue-dropzone 
+            ref="myVueDropzone" 
+            id="dropzone" 
+            :options="dropzoneOptions"
+            v-on:vdropzone-success="success"
+            ></vue-dropzone>
     </div>
 </template>
-
+ 
 <script>
+ 
+import vue2Dropzone from 'vue2-dropzone'
+import 'vue2-dropzone/dist/vue2Dropzone.min.css'
+  
     export default {
+        components: {
+        vueDropzone: vue2Dropzone
+        },
+        data: function () {
+        return {
+            dropzoneOptions: {
+                url: '/formSubmit',
+                // maxFiles: 1,
+                // maxFilesize: 500000,
+                addRemoveLinks: true,
+                // acceptedFiles: ".mp4",
+                dictDefaultMessage: "<i class='fa fa-cloud-upload'></i>آپلود عکس",
+                headers: {
+                "X-CSRF-TOKEN": document.head.querySelector("[name=csrf-token]").content
+                }
+            },
+        }
+        },
         mounted() {
-            console.log('Component mounted.')
+            // console.log('Component mounted.')
+        },
+        methods:{
+            success(file, response){
+                console.log(response)
+                this.$emit('addrfilm', response)
+            }
         }
     }
 </script>
